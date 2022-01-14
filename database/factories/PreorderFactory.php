@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Item;
+use App\Models\Partner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ItemFactory extends Factory
+class PreorderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,9 +14,11 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
+        $partner = Partner::first() ?: Partner::factory()->create();
+
         return [
-            'nama' => $this->faker->words(2, true),
-            'tipe' => $this->faker->randomElement(Item::getTipe())
+            'tanggal' => now(),
+            'partner_id' => $partner->id,
         ];
     }
 }

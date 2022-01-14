@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignIdColumnDefinition;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStocksTable extends Migration
+class CreatePreorderItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,12 @@ class CreateStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('preorder_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('preorder_id')->constrained('preorders');
             $table->foreignId('item_id')->constrained('items');
-            $table->float('qty');
-            $table->string('tipe');
-            $table->text('keterangan')->nullable();
+            $table->foreignId('user_id')->constrained('users');
+            $table->float('quantity');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateStocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('preorder_items');
     }
 }

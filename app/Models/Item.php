@@ -31,4 +31,9 @@ class Item extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+
+    public function preorderItem()
+    {
+        return $this->belongsTo(PreorderItem::class);
+    }
 }

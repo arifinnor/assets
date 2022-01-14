@@ -19,6 +19,10 @@ class Stock extends Model
         'keterangan',
     ];
 
+    protected $casts = [
+        'qty' => 'float'
+    ];
+
     public static function getTipe(): array
     {
         return [

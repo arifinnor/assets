@@ -60,6 +60,7 @@ class StockTest extends TestCase
         ];
 
         $response = $this->postJson(route('api.stocks.store', $createItem->id), $request);
+
         $response->assertCreated();
 
         $this->assertDatabaseHas('stocks', $request);

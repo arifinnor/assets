@@ -13,16 +13,13 @@ class ItemController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'data' => []
-        ]);
+        $items = Item::get();
+        return $this->success($items->toArray());
     }
 
     public function show(Request $request, Item $item)
     {
-        return response()->json([
-            'data' => $item->toArray()
-        ]);
+        return $this->success($item->toArray());
     }
 
     public function store(Request $request)
@@ -34,26 +31,19 @@ class ItemController extends Controller
 
         $item = Item::create($validator);
 
-        return response()->json([
-            'data' => $item->toArray()
-        ]);
+        return $this->success($item->toArray());
     }
 
     public function update(Request $request, Item $item)
     {
         $item->update($request->all());
 
-        return response()->json([
-            'data' => $item->toArray()
-        ]);
+        return $this->success($item->toArray());
     }
 
     public function destroy(Request $request, Item $item)
     {
         $item->delete();
-
-        return response()->json([
-            'data' => []
-        ]);
+        return $this->success();
     }
 }

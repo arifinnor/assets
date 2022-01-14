@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Api\PartnerController;
+use App\Http\Controllers\Api\PreorderController;
 use App\Http\Controllers\Api\StockController;
 
 /*
@@ -32,5 +34,14 @@ Route::name('api.')->group(function () {
     Route::prefix('stocks')->name('stocks.')->group(function () {
         Route::get('/', [StockController::class, 'index'])->name('index');
         Route::post('/{item}', [StockController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('partners')->name('partners.')->group(function () {
+        Route::get('/', [PartnerController::class, 'index'])->name('index');
+        Route::post('/', [PartnerController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('preorders')->name('preorders.')->group(function () {
+        Route::post('/', [PreorderController::class, 'store'])->name('store');
     });
 });
