@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\PreorderController;
 use App\Http\Controllers\Api\StockController;
+use App\Http\Controllers\Api\VariantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,5 +44,9 @@ Route::name('api.')->group(function () {
 
     Route::prefix('preorders')->name('preorders.')->group(function () {
         Route::post('/', [PreorderController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('variants')->name('variants.')->group(function () {
+        Route::post('/', [VariantController::class, 'store'])->name('store');
     });
 });

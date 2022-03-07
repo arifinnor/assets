@@ -32,7 +32,9 @@ class ItemTest extends TestCase
     {
         $request = [
             'nama' => '',
-            'tipe' => ''
+            'tipe' => '',
+            'tipe_aset' => '',
+
         ];
 
         $response = $this->postJson(route('api.items.store'), $request);
@@ -42,11 +44,13 @@ class ItemTest extends TestCase
     public function test_create_item_valid_request()
     {
         $nama = 'Kertas HVS A4';
-        $tipe = Item::TIPE_ASET_LANCAR;
+        $tipeAset = Item::TIPE_ASET_LANCAR;
+        $tipe = Item::TIPE_KIB_B;
 
         $request = [
             'nama' => $nama,
-            'tipe' => $tipe
+            'tipe_aset' => $tipeAset,
+            'tipe' => $tipe,
         ];
 
         $response = $this->postJson(route('api.items.store'), $request);
@@ -54,6 +58,7 @@ class ItemTest extends TestCase
 
         $this->assertDatabaseHas('items', [
             'nama' => $nama,
+            'tipe_aset' => $tipeAset,
             'tipe' => $tipe,
         ]);
     }
@@ -63,11 +68,13 @@ class ItemTest extends TestCase
         $createItem = Item::factory()->create();
 
         $nama = 'Kertas HVS A4';
-        $tipe = Item::TIPE_ASET_LANCAR;
+        $tipeAset = Item::TIPE_ASET_LANCAR;
+        $tipe = Item::TIPE_KIB_B;
 
         $request = [
             'nama' => $nama,
-            'tipe' => $tipe
+            'tipe_aset' => $tipeAset,
+            'tipe' => $tipe,
         ];
 
         $response = $this->putJson(route('api.items.update', $createItem->id), $request);
@@ -76,6 +83,7 @@ class ItemTest extends TestCase
         $this->assertDatabaseHas('items', [
             'id' => $createItem->id,
             'nama' => $nama,
+            'tipe_aset' => $tipeAset,
             'tipe' => $tipe,
         ]);
     }

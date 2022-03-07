@@ -21,31 +21,42 @@ class PreorderTest extends TestCase
     public function test_create_preorder_successful()
     {
         $createPartner = Partner::factory()->create();
+
         $item1 = Item::factory()->create();
         $item2 = Item::factory()->create();
+
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
+
+        $variants = [];
+        for ($i = 0; $i <= 1; $i++) {
+            $variants[] = [
+                'item_id' => $item1->id,
+                'quantity' => 3,
+                'ordered_for' => $user1->id,
+                'collection' => [
+                    'merk' => 'LENOVO',
+
+                ],
+            ];
+        }
 
         $request = [
             'tanggal' => now(),
             'partner_id' => $createPartner->id,
-            'items' => [
-                [
-                    'item_id' => $item1->id,
-                    'quantity' => 1,
-                    'user_id' => $user1->id,
-                ],
-                [
-                    'item_id' => $item2->id,
-                    'quantity' => 1,
-                    'user_id' => $user2->id,
-                ]
-
-            ]
+            'variants' => $variants,
         ];
 
         $response = $this->postJson(route('api.preorders.store'), $request);
         $response->assertCreated();
+
+        $findPreorder = Preorder::with([
+            'preorderItems', 'partner'
+        ])
+            ->where('id', 1)
+            ->first();
+
+        dd($findPreorder->toArray());
 
         $this->assertDatabaseHas('preorders', [
             'tanggal' => $request['tanggal'],

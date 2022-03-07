@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Variant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ForeignIdColumnDefinition;
@@ -17,8 +18,8 @@ class CreatePreorderItemsTable extends Migration
         Schema::create('preorder_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('preorder_id')->constrained('preorders');
-            $table->foreignId('item_id')->constrained('items');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignIdFor(Variant::class, 'variant_id');
+            $table->foreignId('ordered_for')->constrained('users');
             $table->float('quantity');
             $table->timestamps();
         });

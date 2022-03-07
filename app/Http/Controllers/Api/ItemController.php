@@ -26,6 +26,7 @@ class ItemController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
+            'tipe_aset' => ['required', Rule::in(Item::getTipeAset())],
             'tipe' => ['required', Rule::in(Item::getTipe())],
         ])->validate();
 

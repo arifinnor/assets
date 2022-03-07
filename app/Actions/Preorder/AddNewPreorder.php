@@ -3,6 +3,7 @@
 namespace App\Actions\Preorder;
 
 use App\Models\Preorder;
+use App\Models\Variant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,14 @@ class AddNewPreorder
             DB::beginTransaction();
 
             $preorder = Preorder::create($request);
-            $preorder->items()->createMany($request['items']);
+
+            foreach ($request['variants'] as $variant) {
+                $variant['register'] = Variant::register($variant['item_id']);
+                $createVariant = Variant::create($variant);
+                $variant['variant_id'] = $createVariant->id;
+
+                $preorder->preorderItems()->create($variant);
+            }
 
             DB::commit();
         } catch (Throwable $e) {
@@ -28,8 +36,6 @@ class AddNewPreorder
             return ['error' => $e->getMessage()];
         }
 
-        $preorder->load(['items']);
-
         return $preorder->toArray();
     }
 
@@ -38,10 +44,12 @@ class AddNewPreorder
         $input = Validator::make($request, [
             'partner_id' => 'required|exists:partners,id',
             'tanggal' => 'required|date',
-            'items' => 'required|array',
-            'items.*.item_id' => 'required|exists:items,id',
-            'items.*.user_id' => 'required|exists:users,id',
-            'items.*.quantity' => 'required|integer',
+            'variants' => 'required|array',
+            'variants.*.item_id' => 'required|exists:items,id',
+            'variants.*.ordered_for' => 'required|exists:users,id',
+            'variants.*.quantity' => 'required|integer',
+            'variants.*.collection' => 'sometimes|array',
+
         ]);
 
         return $input->validate();

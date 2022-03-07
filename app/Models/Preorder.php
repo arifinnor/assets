@@ -19,7 +19,7 @@ class Preorder extends Model
         'partner_id'
     ];
 
-    public function items(): HasMany
+    public function preorderItems(): HasMany
     {
         return $this->hasMany(PreorderItem::class, 'preorder_id');
     }

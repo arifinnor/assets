@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Hash;
 
 class PreorderItem extends Model
 {
@@ -12,9 +14,9 @@ class PreorderItem extends Model
 
     protected $fillable = [
         'preorder_id',
-        'item_id',
+        'variant_id',
         'quantity',
-        'user_id',
+        'ordered_for',
     ];
 
     protected $hidden = [
@@ -23,7 +25,7 @@ class PreorderItem extends Model
 
     protected $with = [
         'user',
-        'item',
+        'variants',
     ];
 
     protected $casts = [
@@ -32,11 +34,11 @@ class PreorderItem extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'ordered_for');
     }
 
-    public function item(): BelongsTo
+    public function variants(): HasMany
     {
-        return $this->belongsTo(Item::class, 'item_id');
+        return $this->hasMany(Variant::class, 'id', 'variant_id');
     }
 }
